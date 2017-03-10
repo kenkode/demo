@@ -1,6 +1,6 @@
 @extends('layouts.payroll')
 @section('content')
-<br/>
+
 <?php
 
 
@@ -24,9 +24,9 @@ function asMoney($value) {
 
 <div class="col-lg-2">
 
-<img src="{{asset('/public/uploads/employees/photo/'.$rel->photo) }}" width="150px" height="130px" alt=""><br>
+<img src="{{asset('/public/uploads/photos/'.$rel->photo) }}" width="150px" height="130px" alt=""><br>
 <br>
-<img src="{{asset('/public/uploads/employees/signature/'.$rel->signature) }}" width="120px" height="50px" alt="">
+<img src="{{asset('/public/uploads/photos/'.$rel->signature) }}" width="120px" height="50px" alt="">
 </div>
 
 <div class="col-lg-6">

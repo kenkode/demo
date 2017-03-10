@@ -2,11 +2,6 @@
 @section('content')
 
 
-
-
-
-<br><br>
-
 @if (Session::get('notice'))
             <div class="alert alert-info">{{ Session::get('notice') }}</div>
         @endif
@@ -32,11 +27,11 @@
 
 
 <div class="row">
-  
+  <div class="col-lg-12">
 <a href="{{URL::to('empedit/'.$employee->id)}}" class="btn btn-info">Update Details</a>
 <br><br>
 
-  <div class="col-lg-4">
+  <div class="col-lg-6">
 
 
 
@@ -67,7 +62,7 @@
            @if($employee->citizenship !=  null )
            <tr>
             <td>Citizenship</td>
-            <td>{{$employee->citizenship}}</td>
+            <td>{{$employee->citizenship->name}}</td>
           </tr>
           @endif
 
@@ -86,10 +81,27 @@
           </tr>
           @endif
 
+          <tr><td>Supervisor:</td>     
+        @if($c>0)
+        <?php
+        $sup = Supervisor::where('employee_id',$employee->id)->first();
+        $supervisor = Employee::where('id',$sup->supervisor_id)->first();
+        ?>
+        <td>{{$supervisor->first_name.' '.$supervisor->last_name}}</td>
+        @else
+        <td></td>
+        @endif
+        </tr>
 
-         
-          
-          
+        <tr>
+            <td>Member</td>
+            @if($employee->member_id !=  null ||  $employee->member_id !=  0)
+            <td>Yes</td>
+            @else
+            <td>No</td>
+            @endif
+          </tr>
+
         
       </table>
   
@@ -98,7 +110,7 @@
 
 
 
-  <div class="col-lg-4">
+  <div class="col-lg-6">
 
 
 
@@ -136,11 +148,19 @@
             <td>{{$employee->hospital_insurance_number}}</td>
           </tr>
 
+          <tr>
+            <td>Basic Salary</td>
+           
+            <td>{{$employee->basic_pay}}</td>
+          </tr>
+
 
       </table>
 
 
   </div>
+</div>
+</div>
 
 
 <div class="row">
@@ -152,7 +172,7 @@
   
 
   
-</div>
 
+</div>
 
 @stop

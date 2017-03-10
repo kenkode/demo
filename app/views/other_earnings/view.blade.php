@@ -1,6 +1,6 @@
 @extends('layouts.payroll')
 @section('content')
-<br/>
+
 <?php
 
 
@@ -24,9 +24,9 @@ function asMoney($value) {
 
 <div class="col-lg-2">
 
-<img src="{{asset('/public/uploads/employees/photo/'.$earning->employee->photo) }}" width="150px" height="130px" alt=""><br>
+<img src="{{asset('/public/uploads/photos/'.$earning->employee->photo) }}" width="150px" height="130px" alt=""><br>
 <br>
-<img src="{{asset('/public/uploads/employees/signature/'.$earning->employee->signature) }}" width="120px" height="50px" alt="">
+<img src="{{asset('/public/uploads/photos/'.$earning->employee->signature) }}" width="120px" height="50px" alt="">
 </div>
 
 <div class="col-lg-6">
@@ -41,7 +41,20 @@ function asMoney($value) {
       </tr>
       <tr><td><strong>Earning Type: </strong></td><td>{{$earning->earnings_name}}</td></tr>
       <tr><td><strong>Narrative: </strong></td><td>{{$earning->narrative}}</td></tr>
-      <tr><td><strong>Amount: </strong></td><td align="right">{{asMoney($earning->earnings_amount)}}</td></tr>
+       <tr><td><strong>Formular: </strong></td><td>{{$earning->formular}}</td></tr>
+      @if($earning->instalments > 1)
+      <tr><td><strong>Instalments: </strong></td><td>{{$earning->instalments}}</td></tr>
+      <tr><td><strong>Earning Amount: </strong></td><td align="right">{{asMoney($earning->earnings_amount)}}</td></tr>
+      <tr><td><strong>Total Amount: </strong></td><td align="right">{{asMoney((double)$earning->earnings_amount*(double)$earning->instalments)}}</td></tr>
+      @else
+      <tr><td><strong>Earning Amount: </strong></td><td align="right">{{asMoney($earning->earnings_amount)}}</td></tr>
+      @endif
+      @if($earning->formular == 'One Time' || $earning->formular == 'Instalments')
+      <tr><td><strong>Start Date: </strong></td><td>{{$earning->earning_date}}</td></tr>
+      <tr><td><strong>End Date: </strong></td><td>{{$earning->last_day_month}}</td></tr>
+      @else
+      <tr><td><strong>Start Date: </strong></td><td>{{$earning->earning_date}}</td></tr>
+      @endif
       
 </table>
 </div>

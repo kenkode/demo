@@ -13,7 +13,7 @@ function asMoney($value) {
 	<div class="col-lg-12">
 
 
-<a class="btn btn-info btn-sm "  href="{{ URL::to('members/edit/'.$member->id)}}">update details</a>
+<a class="btn btn-info btn-sm "  href="{{ URL::to('members/edit/'.$member->id)}}">Update Details</a>
 
 <hr>
 </div>	
@@ -86,9 +86,23 @@ function asMoney($value) {
 
 
 	<tr>
+    @if($member->gender == 'M')
+		<td>Gender</td><td>Male</td>
+     @else
+     
+     @endif
 
-		<td>Gender</td><td>{{ $member->gender}}</td>
+     @if($member->gender == 'F')
+    <td>Gender</td><td>Male</td>
+     @else
+     
+     @endif
 
+     @if($member->gender == '')
+    <td>Gender</td><td></td>
+     @else
+     
+     @endif
 
 	</tr>
 
@@ -112,7 +126,16 @@ function asMoney($value) {
 	</tr>
 
 	
+<tr>
 
+    <td>Employee</td>
+    @if($member->is_employee == 1)
+    <td>Yes</td>
+    @else
+    <td>No</td>
+    @endif
+
+  </tr>
 
 
 </table>
@@ -162,6 +185,7 @@ function asMoney($value) {
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#remittance" aria-controls="remittance" role="tab" data-toggle="tab">Remittance</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Next Of Kin</a></li>
+    <li role="presentation"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Loan Accounts</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Saving Accounts</a></li>
      <li role="presentation"><a href="#shares" aria-controls="shares" role="tab" data-toggle="tab">Share Accounts</a></li>
@@ -193,16 +217,16 @@ function asMoney($value) {
 
     	<br>
 
-    	<div class="col-lg-10">
+    	<div class="col-lg-12">
 
     <div class="panel panel-default">
       <div class="panel-heading">
-          <a class="btn btn-info btn-sm" href="{{ URL::to('kins/create/'.$member->id)}}">new Kin</a>
+          Member Kin
         </div>
         <div class="panel-body">
 
 
-    <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
+    <table id="users" width="950" class="table table-condensed table-bordered table-responsive table-hover">
 
 
       <thead>
@@ -214,7 +238,6 @@ function asMoney($value) {
          <th>Relationship</th>
          
            <th>Goodwill</th>
-        <th></th>
 
       </thead>
       <tbody>
@@ -229,9 +252,8 @@ function asMoney($value) {
           <td>{{ $kin->id_number }}</td>
           <td>{{ $kin->rship }}</td>
           <td>{{ $kin->goodwill.' %' }}</td>
-          <td>
-
-                  <div class="btn-group">
+          <!-- <td>
+              <div class="btn-group">
                   <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     Action <span class="caret"></span>
                   </button>
@@ -243,21 +265,48 @@ function asMoney($value) {
                     
                   </ul>
               </div>
-
-                    </td>
-
-
-
+          </td> -->
         </tr>
-
         <?php $i++; ?>
         @endforeach
-
-
       </tbody>
-
-
     </table>
+  </div>
+  </div>
+    </div>
+</div>
+<div role="tabpanel" class="tab-pane" id="documents">
+
+      <br>
+
+      <div class="col-lg-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Documents
+        </div>
+        <div class="panel-body">
+
+
+    <table id="users" width="1000" class="table table-condensed table-bordered table-responsive table-hover">
+                         <thead>
+                         <th>#</th>
+                         <th>Document</th>
+                         <th>Action</th>
+                         </thead>
+                         <tbody>
+                        <?php $j=1;?>
+                        @foreach($documents as $document)
+                        <tr class="del<?php echo $document->id; ?>">
+                          <td>{{$j}}</td>
+                          <td>{{$document->document_path}}</td>
+                          <td><a class="btn btn-danger delbtn" id="<?php echo $document->id; ?>">Delete</a></td>
+                        </tr>
+                        <?php $j++;?>
+                        @endforeach
+                    </tbody>
+                        </table>
+                    </div>
   </div>
 
 
@@ -266,7 +315,8 @@ function asMoney($value) {
 
     </div>
 
-</div>
+
+
     <div role="tabpanel" class="tab-pane" id="messages">
 
 
@@ -279,7 +329,7 @@ function asMoney($value) {
         <div class="panel-body">
 
 
-    <table id="mobile" class="table table-condensed table-bordered table-responsive table-hover">
+    <table id="mobile" width="1000" class="table table-condensed table-bordered table-responsive table-hover">
 
 
       <thead>
@@ -337,30 +387,7 @@ function asMoney($value) {
     </table>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
-
-
-
     <div role="tabpanel" class="tab-pane" id="settings">
 
       <br>
@@ -368,13 +395,12 @@ function asMoney($value) {
           <div class="col-lg-12">
 
             <div class="panel panel-default">
-              <div class="panel-heading">
-              <a class="btn btn-info btn-sm" href="{{ URL::to('savingaccounts/create/'.$member->id)}}">new Saving Account</a>
+            <div class="panel-heading">
+            <a class="btn btn-info btn-sm" href="{{ URL::to('savingaccounts/create/'.$member->id)}}">New Saving Account
+            </a>
             </div>
             
             <div class="panel-body">
-
-
                 <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
 
 
@@ -392,13 +418,10 @@ function asMoney($value) {
                   <tbody>
 
                       <?php $i = 1; ?>
-                    
+                    @if($member->savingaccounts!=null)
                     @foreach($member->savingaccounts as $saving)
-
                     <tr>
-
-                      <td> {{ $i }}</td>
-                    
+                      <td> {{ $i }}</td>                    
                       <td>{{ $saving->savingproduct->name }}</td>
                       <td>{{ $saving->account_number }}</td>
                       <td> <a href="{{ URL::to('savingtransactions/show/'.$saving->id)}}" class="btn btn-primary btn-sm">View </a></td>
@@ -406,7 +429,7 @@ function asMoney($value) {
 
                       <?php $i++; ?>
                     @endforeach
-
+		    @endif
 
                   </tbody>
 
@@ -521,7 +544,30 @@ function asMoney($value) {
 
 
 
-
+<script type="text/javascript">
+        $(document).ready(function() {
+        $('.delbtn').click( function() {
+        
+                var id = $(this).attr("id");
+         
+                if(confirm("Are you sure you want to delete this document?")){
+                    $.ajax({
+                        type: "POST",
+                        url: "{{URL::to('deldoc')}}",
+                        data: {'id': id},
+                        cache: false,
+                        success: function(s){
+                            if(s == 0){
+                              $(".del"+id).fadeOut('slow');
+                            } 
+                        } 
+                    }); 
+                }else{
+                    return false;
+                }
+            });             
+        });
+        </script>
 
 
 

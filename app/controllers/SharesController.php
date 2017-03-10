@@ -9,8 +9,7 @@ class SharesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$shares = Share::all();
-
+		$shares = Share::where('organization_id',Confide::user()->organization_id)->get();
 		return View::make('shares.index', compact('shares'));
 	}
 
@@ -44,6 +43,7 @@ class SharesController extends \BaseController {
 		$share->value = Input::get('value');
 		$share->transfer_charge = Input::get('transfer_charge');
 		$share->charged_on = Input::get('charged_on');
+		$share->organization_id=Confide::User()->organization_id;
 		$share->save();
 
 		return Redirect::route('shares.index');
@@ -100,6 +100,67 @@ class SharesController extends \BaseController {
 		return Redirect::to('shares/show/'.$share->id);
 	}
 
+	/**
+	 * Share capital Contribution.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function contribution(){
+		$members=Member::where('organization_id',Confide::user()->organization_id)->get();
+		return View::make('sharecapital.contribution',compact('members'));
+	}
+	/**
+	 * Share Capital Dividends.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function dividend(){
+		$members=Member::where('organization_id',Confide::user()->organization_id)->get();
+		return View::make('sharecapital.dividend',compact('members'));
+	}
+	/**
+	 * Share capital report.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function parameters(){
+		return View::make('sharecapital.parameters');
+	}
+
+
+	public function parameterize(){
+		$divi=new Dividend;
+		$divi->total=Input::get('sum_dividends');
+		$divi->special=Input::get('special_dividends');
+		$divi->outstanding=Input::get('outstanding_shares');
+		$divi->organization_id=Confide::User()->organization_id;
+		$divi->save();
+
+		return Redirect::action('SharesController@dividend');
+	}
+	/**
+	 * Share capital report.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editparameters(){
+		$div=Dividend::where('organization_id',Confide::user()->organization_id)->get()->first();
+		return View::make('sharecapital.editparameters',compact('div'));
+	}
+
+	public function doparameterize(){
+		$divi=Dividend::where('organization_id',Confide::user()->organization_id)->get()->first();
+		$divi->total=Input::get('sum_dividends');
+		$divi->special=Input::get('special_dividends');
+		$divi->outstanding=Input::get('outstanding_shares');
+		$divi->update();
+
+		return Redirect::action('SharesController@dividend');
+	}
 	/**
 	 * Remove the specified share from storage.
 	 *

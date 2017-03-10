@@ -16,6 +16,9 @@ class CreateXMembersTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			$table->string('first_name');
+			$table->string('middle_name')->nullable();
+			$table->string('last_name');
 			$table->string('membership_no')->unique('membership_no');
 			$table->string('photo')->default('default_photo.png');
 			$table->string('signature')->nullable();

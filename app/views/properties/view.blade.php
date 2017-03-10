@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<br/>
+
 <?php
 
 
@@ -29,7 +29,7 @@ function asMoney($value) {
 
 <a class="btn btn-info btn-sm "  href="{{ URL::to('Properties/edit/'.$property->id)}}">update details</a>
 <a class="btn btn-danger btn-sm "  href="{{URL::to('Properties/delete/'.$property->id)}}" onclick="return (confirm('Are you sure you want to delete this property?'))">Delete</a>
-<a class="btn btn-success btn-sm "  href="{{ URL::to('employees/view/'.$property->employee->id)}}">Go Back</a>
+<a class="btn btn-success btn-sm "  href="{{ URL::to('Properties')}}">Go Back</a>
 
 <hr>
 </div>	
@@ -40,9 +40,9 @@ function asMoney($value) {
 
 <div class="col-lg-2">
 
-<img src="{{asset('/public/uploads/employees/photo/'.$property->employee->photo) }}" width="150px" height="130px" alt=""><br>
+<img src="{{asset('/public/uploads/photos/'.$property->employee->photo) }}" width="150px" height="130px" alt=""><br>
 <br>
-<img src="{{asset('/public/uploads/employees/signature/'.$property->employee->signature) }}" width="120px" height="50px" alt="">
+<img src="{{asset('/public/uploads/photos/'.$property->employee->signature) }}" width="120px" height="50px" alt="">
 </div>
 
 <div class="col-lg-6">
