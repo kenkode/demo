@@ -995,6 +995,7 @@ $display .="
         $payroll->earning_amount = Payroll::total_benefits($employee->id,Input::get('period'));
         $payroll->taxable_income = Payroll::gross($employee->id,Input::get('period'));
         $payroll->paye = Payroll::tax($employee->id,Input::get('period'));
+        $payroll->relief = 1280.00;
         $payroll->nssf_amount = Payroll::nssf($employee->id,Input::get('period'));
         $payroll->nhif_amount = Payroll::nhif($employee->id,Input::get('period'));
         $payroll->other_deductions = Payroll::deductionall($employee->id,Input::get('period'))+Payroll::remittances($employee->member_id)+Payroll::totalmemberloans($employee->member_id);

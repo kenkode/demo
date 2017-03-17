@@ -2166,5 +2166,111 @@ public static $rules = [
     return round($paye,2);
    }
 
+   public static function salo($employee,$month,$year){
+      $pay        = 0.00;
+      $allowances = 0.00;
+      $ot         = 0.00;
+      $earnings   = 0.00;
+      $year = str_replace(' ','',$year);
+      $period = $month.'-'.$year; 
+      if(DB::table('transact')->where('employee_id',$employee->personal_file_number)->where('financial_month_year',$period)->count()>0){
+        $pay = DB::table('transact')->where('employee_id',$employee->personal_file_number)->where('financial_month_year',$period)->pluck("basic_pay");
+      }else{
+        $pay = 0.00;
+      }
+      if(DB::table('transact_allowances')->where('employee_id',$employee->id)->where('financial_month_year',$period)->count()>0){
+        $allowances = DB::table('transact_allowances')->where('employee_id',$employee->id)->where('financial_month_year',$period)->sum('allowance_amount');
+      }else{
+        $allowances = 0.00;
+      }
+      if(DB::table('transact_overtimes')->where('employee_id',$employee->id)->where('financial_month_year',$period)->select(DB::raw('sum(overtime_period*overtime_amount) AS total'))->count()>0){
+        $overtimes = DB::table('transact_overtimes')->where('employee_id',$employee->id)->where('financial_month_year',$period)->select(DB::raw('sum(overtime_period*overtime_amount) AS total'))->first();
+        $ot = $overtimes->total;
+      }else{
+        $ot = 0.00;
+      }
+      if(DB::table('transact_earnings')->where('employee_id',$employee->id)->where('financial_month_year',$period)->count()>0){
+        $earnings = DB::table('transact_earnings')->where('employee_id',$employee->id)->where('financial_month_year',$period)->sum('earning_amount');
+      }else{
+        $earnings = 0.00;
+      }
+      
+      return $pay+$allowances+$ot+$earnings;
+   }
+
+   public static function pgross($id,$month,$year){
+      $year = str_replace(' ','',$year); 
+      $period = $month.'-'.$year;
+       
+      $gross   = 0.00;
+      if(DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->count()>0){
+        $gross = DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->pluck('taxable_income');
+      }else{
+        $gross = 0.00;
+      }
+
+      
+      return $gross;
+   }
+
+   public static function ptax($id,$month,$year){
+      $year = str_replace(' ','',$year); 
+      $period = $month.'-'.$year;
+
+      $tax   = 0.00;
+      if(DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->count()>0){
+        $tax = DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->pluck('paye');
+      }else{
+        $tax = 0.00;
+      }
+
+      
+      return $tax;
+   }
+
+   public static function ptaxrelief($id,$month,$year){
+      $year = str_replace(' ','',$year); 
+      $period = $month.'-'.$year;
+
+      $tax   = 0.00;
+      if(DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->count()>0){
+        $tax = DB::table('transact')->where('employee_id',$id)->where('financial_month_year',$period)->pluck('relief');
+      }else{
+        $tax = 0.00;
+      }
+
+      
+      return $tax;
+   }
+
+   public static function prelief($id,$pfn,$month,$year){
+      $year = str_replace(' ','',$year); 
+      $period = $month.'-'.$year;
+
+      $relief   = 0.00;
+      if(DB::table('transact_reliefs')->where('employee_id',$id)->where('financial_month_year',$period)->count()>0){
+        $relief = DB::table('transact_reliefs')->where('employee_id',$id)->where('financial_month_year',$period)->pluck('relief_amount')+Payroll::ptaxrelief($pfn,$month,$year);
+      }else{
+        $relief = Payroll::ptaxrelief($pfn,$month,$year);
+      }
+
+      return $relief;
+   }
+
+   public static function totalprelief($id,$year){
+      $year = str_replace(' ','',$year); 
+
+      $period = $year;
+
+      $relief   = 0.00;
+      if(DB::table('transact_reliefs')->where('employee_id',$id)->where('financial_month_year',$period)->count()>0){
+        $relief = DB::table('transact_reliefs')->where('employee_id',$id)->where('financial_month_year',$period)->pluck('relief_amount')+ptaxrelief($pfn,$month,$year);
+      }else{
+        $relief = ptaxrelief($pfn,$month,$year);
+      }
+
+      return $relief;
+   }
+
 
 }

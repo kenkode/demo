@@ -2418,8 +2418,10 @@ Route::get('statutoryReports', function(){
 });
 
 Route::get('payrollReports/selectYear', function(){
+    $branches = Branch::whereNull('organization_id')->orWhere('organization_id',Confide::user()->organization_id)->get();
+    $departments = Department::whereNull('organization_id')->orWhere('organization_id',Confide::user()->organization_id)->get();
     $employees = Employee::where('organization_id',Confide::user()->organization_id)->get();
-    return View::make('pdf.p9Select',compact('employees'));
+    return View::make('pdf.p9Select',compact('employees','branches','departments'));
 });
 
 Route::get('email/payslip', 'payslipEmailController@index');

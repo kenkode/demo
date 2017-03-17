@@ -20,6 +20,11 @@
                         <a href="{{ URL::to('payrollReports/selectPayePeriod') }}"><i class="glyphicon glyphicon-file fa-fw"></i> Paye Returns</a>
                     </li>
 
+                    <li>
+                        <a href="{{ URL::to('payrollReports/selectYear') }}"><i class="glyphicon glyphicon-file fa-fw"></i> P9 Form</a>
+                    </li>
+
+
                    
                 </ul>
                 <?php

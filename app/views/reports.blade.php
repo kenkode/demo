@@ -174,6 +174,10 @@
        </li>
 
        <li>
+          <a href="{{ URL::to('payrollReports/selectYear') }}">P9 Form</a>
+       </li>
+
+       <li>
           <a href="{{ URL::to('itax/download') }}">Download Itax Template</a>
        </li>
 

@@ -1,8 +1,4 @@
-<style type="text/css">
-.dropdown-menu {
-    margin-left: 190px;
-}
-</style>
+
 
  <nav class="navbar-default navbar-static-side" id="wrap" role="navigation">
     
@@ -115,6 +111,9 @@
                             </li>
                             <li>
                               <a href="{{ URL::to('payrollReports/selectPayePeriod') }}"><i class="fa fa-file fa-fw"></i>PAYE Returns</a>
+                            </li>
+                            <li>
+                              <a href="{{ URL::to('payrollReports/selectYear') }}"><i class="fa fa-file fa-fw"></i>P9 Form</a>
                             </li>
                             <li>
                               <a href="{{ URL::to('itax/download') }}"><i class="fa fa-file fa-fw"></i>Download Itax Template</a>
